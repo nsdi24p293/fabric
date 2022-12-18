@@ -14,11 +14,11 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/osdi23p228/fabric/integration"
-	"github.com/osdi23p228/fabric/integration/nwo"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
+	"github.com/osdi23p228/fabric/integration"
+	"github.com/osdi23p228/fabric/integration/nwo"
 )
 
 func TestEndToEnd(t *testing.T) {

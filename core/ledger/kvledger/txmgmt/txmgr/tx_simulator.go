@@ -23,13 +23,19 @@ type txSimulator struct {
 	pvtdataQueriesPerformed   bool
 	simulationResultsComputed bool
 	paginatedQueriesPerformed bool
+
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	vdb *VisibleDB
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 }
 
-func newTxSimulator(txmgr *LockBasedTxMgr, txid string, hashFunc rwsetutil.HashFunc) (*txSimulator, error) {
+func newTxSimulator(txmgr *LockBasedTxMgr, txid string, hashFunc rwsetutil.HashFunc, vdb *VisibleDB) (*txSimulator, error) {
 	rwsetBuilder := rwsetutil.NewRWSetBuilder()
 	qe := newQueryExecutor(txmgr, txid, rwsetBuilder, true, hashFunc)
 	logger.Debugf("constructing new tx simulator txid = [%s]", txid)
-	return &txSimulator{qe, rwsetBuilder, false, false, false, false}, nil
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	return &txSimulator{qe, rwsetBuilder, false, false, false, false, vdb}, nil
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 }
 
 // SetState implements method in interface `ledger.TxSimulator`
@@ -221,3 +227,14 @@ func (s *txSimulator) checkPaginatedQueryPerformed() error {
 	}
 	return nil
 }
+
+// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+func (s *txSimulator) GetDBState(key string, session string) *ledger.VersionedValue {
+	return s.vdb.Get(key, session)
+}
+
+func (s *txSimulator) SetDBState(key string, vv *ledger.VersionedValue, session string) {
+	s.vdb.Set(key, vv, session)
+}
+
+// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^

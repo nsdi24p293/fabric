@@ -9,8 +9,8 @@ package endorser
 import (
 	"testing"
 
-	"github.com/osdi23p228/fabric/common/metrics/metricsfakes"
 	. "github.com/onsi/gomega"
+	"github.com/osdi23p228/fabric/common/metrics/metricsfakes"
 )
 
 func TestNewMetrics(t *testing.T) {

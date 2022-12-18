@@ -7,21 +7,22 @@
 package etcdraft_test
 
 import (
-	"github.com/osdi23p228/fabric/common/channelconfig"
-	"github.com/osdi23p228/fabric/orderer/consensus/etcdraft/mocks"
 	"io/ioutil"
 	"time"
+
+	"github.com/osdi23p228/fabric/common/channelconfig"
+	"github.com/osdi23p228/fabric/orderer/consensus/etcdraft/mocks"
 
 	"github.com/golang/protobuf/proto"
 	etcdraftproto "github.com/hyperledger/fabric-protos-go/orderer/etcdraft"
 	raftprotos "github.com/hyperledger/fabric-protos-go/orderer/etcdraft"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/osdi23p228/fabric/bccsp"
 	"github.com/osdi23p228/fabric/bccsp/sw"
 	"github.com/osdi23p228/fabric/common/crypto/tlsgen"
 	"github.com/osdi23p228/fabric/orderer/consensus/etcdraft"
 	consensusmocks "github.com/osdi23p228/fabric/orderer/consensus/mocks"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 )
 
 func makeOrdererOrg(caCert []byte) *mocks.OrdererOrg {

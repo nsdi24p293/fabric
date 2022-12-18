@@ -16,12 +16,12 @@ import (
 	"github.com/hyperledger/fabric-protos-go/common"
 	"github.com/hyperledger/fabric-protos-go/msp"
 	protosorderer "github.com/hyperledger/fabric-protos-go/orderer"
-	"github.com/osdi23p228/fabric/integration/nwo/commands"
-	"github.com/osdi23p228/fabric/internal/configtxlator/update"
-	"github.com/osdi23p228/fabric/protoutil"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
+	"github.com/osdi23p228/fabric/integration/nwo/commands"
+	"github.com/osdi23p228/fabric/internal/configtxlator/update"
+	"github.com/osdi23p228/fabric/protoutil"
 )
 
 // GetConfigBlock retrieves the current config block for a channel.

@@ -15,15 +15,15 @@ import (
 
 	docker "github.com/fsouza/go-dockerclient"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega/gbytes"
+	"github.com/onsi/gomega/gexec"
 	"github.com/osdi23p228/fabric/integration/nwo"
 	"github.com/osdi23p228/fabric/integration/nwo/commands"
 	"github.com/osdi23p228/fabric/internal/peer/common"
 	"github.com/osdi23p228/fabric/msp"
 	"github.com/osdi23p228/fabric/protoutil"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/gbytes"
-	"github.com/onsi/gomega/gexec"
 	"github.com/tedsuo/ifrit"
 )
 

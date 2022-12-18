@@ -17,10 +17,10 @@ import (
 
 	docker "github.com/fsouza/go-dockerclient"
 	"github.com/hyperledger/fabric-lib-go/healthz"
-	"github.com/osdi23p228/fabric/integration/nwo"
-	"github.com/osdi23p228/fabric/integration/runner"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/osdi23p228/fabric/integration/nwo"
+	"github.com/osdi23p228/fabric/integration/runner"
 	"github.com/tedsuo/ifrit"
 	"github.com/tedsuo/ifrit/ginkgomon"
 )

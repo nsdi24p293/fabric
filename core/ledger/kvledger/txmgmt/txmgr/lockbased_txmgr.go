@@ -44,6 +44,10 @@ type LockBasedTxMgr struct {
 	oldBlockCommit      sync.Mutex
 	current             *current
 	hashFunc            rwsetutil.HashFunc
+
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	vdb *VisibleDB
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 }
 
 // pvtdataPurgeMgr wraps the actual purge manager and an additional flag 'usedOnce'
@@ -115,6 +119,7 @@ func NewLockBasedTxMgr(initializer *Initializer) (*LockBasedTxMgr, error) {
 		stateListeners: initializer.StateListeners,
 		ccInfoProvider: initializer.CCInfoProvider,
 		hashFunc:       initializer.HashFunc,
+		vdb:            NewVisibleDB(),
 	}
 	pvtstatePurgeMgr, err := pvtstatepurgemgmt.InstantiatePurgeMgr(
 		initializer.LedgerID,
@@ -165,7 +170,9 @@ func (txmgr *LockBasedTxMgr) NewQueryExecutorNoCollChecks() (ledger.QueryExecuto
 // NewTxSimulator implements method in interface `txmgmt.TxMgr`
 func (txmgr *LockBasedTxMgr) NewTxSimulator(txid string) (ledger.TxSimulator, error) {
 	logger.Debugf("constructing new tx simulator")
-	s, err := newTxSimulator(txmgr, txid, txmgr.hashFunc)
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	s, err := newTxSimulator(txmgr, txid, txmgr.hashFunc, txmgr.vdb)
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 	if err != nil {
 		return nil, err
 	}

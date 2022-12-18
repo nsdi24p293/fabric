@@ -10,10 +10,11 @@ import (
 	"context"
 	"encoding/pem"
 	"fmt"
-	"github.com/osdi23p228/fabric/common/channelconfig"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/osdi23p228/fabric/common/channelconfig"
 
 	"github.com/osdi23p228/fabric/orderer/common/types"
 

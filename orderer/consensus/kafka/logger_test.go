@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
-	"github.com/osdi23p228/fabric/common/flogging"
 	"github.com/onsi/gomega/gbytes"
+	"github.com/osdi23p228/fabric/common/flogging"
 	"github.com/stretchr/testify/assert"
 )
 

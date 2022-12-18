@@ -310,7 +310,20 @@ type TxSimulator interface {
 	// The public data simulation results are expected to be used as in V1 while the private data simulation results are expected
 	// to be used by the gossip to disseminate this to the other endorsers (in phase-2 of sidedb)
 	GetTxSimulationResults() (*TxSimulationResults, error)
+
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	GetDBState(key string, session string) *VersionedValue
+	SetDBState(key string, vv *VersionedValue, session string)
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 }
+
+// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+type VersionedValue struct {
+	TXID  string
+	Value []byte
+}
+
+// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 
 // QueryResultsIterator - an iterator for query result set
 type QueryResultsIterator interface {

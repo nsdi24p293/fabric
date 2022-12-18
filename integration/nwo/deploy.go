@@ -18,14 +18,14 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric-protos-go/common"
 	"github.com/hyperledger/fabric-protos-go/peer/lifecycle"
-	"github.com/osdi23p228/fabric/common/util"
-	"github.com/osdi23p228/fabric/integration/nwo/commands"
-	"github.com/osdi23p228/fabric/protoutil"
 	"github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
 	. "github.com/onsi/gomega/gstruct"
+	"github.com/osdi23p228/fabric/common/util"
+	"github.com/osdi23p228/fabric/integration/nwo/commands"
+	"github.com/osdi23p228/fabric/protoutil"
 )
 
 type Chaincode struct {

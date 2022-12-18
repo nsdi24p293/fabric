@@ -16,11 +16,11 @@ import (
 	. "github.com/onsi/gomega"
 
 	docker "github.com/fsouza/go-dockerclient"
+	"github.com/onsi/gomega/gbytes"
+	"github.com/onsi/gomega/gexec"
 	"github.com/osdi23p228/fabric/integration/nwo"
 	"github.com/osdi23p228/fabric/integration/nwo/commands"
 	"github.com/osdi23p228/fabric/integration/nwo/fabricconfig"
-	"github.com/onsi/gomega/gbytes"
-	"github.com/onsi/gomega/gexec"
 	"github.com/tedsuo/ifrit"
 )
 

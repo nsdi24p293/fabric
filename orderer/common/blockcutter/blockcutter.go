@@ -10,8 +10,10 @@ import (
 	"time"
 
 	cb "github.com/hyperledger/fabric-protos-go/common"
+	"github.com/hyperledger/fabric-protos-go/orderer"
 	"github.com/osdi23p228/fabric/common/channelconfig"
 	"github.com/osdi23p228/fabric/common/flogging"
+	"github.com/osdi23p228/fabric/common/util"
 )
 
 var logger = flogging.MustGetLogger("orderer.common.blockcutter")
@@ -39,6 +41,10 @@ type receiver struct {
 	PendingBatchStartTime time.Time
 	ChannelID             string
 	Metrics               *Metrics
+
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	Scheduler *Scheduler
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 }
 
 // NewReceiverImpl creates a Receiver implementation based on the given configtxorderer manager
@@ -47,37 +53,60 @@ func NewReceiverImpl(channelID string, sharedConfigFetcher OrdererConfigFetcher,
 		sharedConfigFetcher: sharedConfigFetcher,
 		Metrics:             metrics,
 		ChannelID:           channelID,
+		Scheduler:           NewScheduler(metrics, channelID),
 	}
 }
 
-// Ordered should be invoked sequentially as messages are ordered
-//
-// messageBatches length: 0, pending: false
-//   - impossible, as we have just received a message
-// messageBatches length: 0, pending: true
-//   - no batch is cut and there are messages pending
-// messageBatches length: 1, pending: false
-//   - the message count reaches BatchSize.MaxMessageCount
-// messageBatches length: 1, pending: true
-//   - the current message will cause the pending batch size in bytes to exceed BatchSize.PreferredMaxBytes.
-// messageBatches length: 2, pending: false
-//   - the current message size in bytes exceeds BatchSize.PreferredMaxBytes, therefore isolated in its own batch.
-// messageBatches length: 2, pending: true
-//   - impossible
-//
-// Note that messageBatches can not be greater than 2.
-func (r *receiver) Ordered(msg *cb.Envelope) (messageBatches [][]*cb.Envelope, pending bool) {
-	if len(r.pendingBatch) == 0 {
-		// We are beginning a new batch, mark the time
-		r.PendingBatchStartTime = time.Now()
-	}
+// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+func (r *receiver) Ordered(msg *cb.Envelope) ([][]*cb.Envelope, bool) {
+	txID := util.GetTXIDFromEnvelope(msg)
 
+	batchSize := r.getBatchSize()
+
+	if util.IsCustomTXID(txID) {
+		return r.Scheduler.Schedule(msg, txID, batchSize)
+	} else {
+		return r.Schedule(msg, batchSize)
+	}
+}
+
+func (r *receiver) getBatchSize() *orderer.BatchSize {
 	ordererConfig, ok := r.sharedConfigFetcher.OrdererConfig()
 	if !ok {
 		logger.Panicf("Could not retrieve orderer config to query batch parameters, block cutting is not possible")
 	}
 
-	batchSize := ordererConfig.BatchSize()
+	return ordererConfig.BatchSize()
+}
+
+// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
+
+// Ordered should be invoked sequentially as messages are ordered
+//
+// messageBatches length: 0, pending: false
+//   - impossible, as we have just received a message
+//
+// messageBatches length: 0, pending: true
+//   - no batch is cut and there are messages pending
+//
+// messageBatches length: 1, pending: false
+//   - the message count reaches BatchSize.MaxMessageCount
+//
+// messageBatches length: 1, pending: true
+//   - the current message will cause the pending batch size in bytes to exceed BatchSize.PreferredMaxBytes.
+//
+// messageBatches length: 2, pending: false
+//   - the current message size in bytes exceeds BatchSize.PreferredMaxBytes, therefore isolated in its own batch.
+//
+// messageBatches length: 2, pending: true
+//   - impossible
+//
+// Note that messageBatches can not be greater than 2.
+func (r *receiver) Schedule(msg *cb.Envelope, batchSize *orderer.BatchSize) (messageBatches [][]*cb.Envelope, pending bool) {
+	if len(r.pendingBatch) == 0 {
+		// We are beginning a new batch, mark the time
+		r.PendingBatchStartTime = time.Now()
+	}
 
 	messageSizeBytes := messageSizeBytes(msg)
 	if messageSizeBytes > batchSize.PreferredMaxBytes {

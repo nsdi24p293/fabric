@@ -13,11 +13,11 @@ import (
 	"time"
 
 	"github.com/hyperledger/fabric-protos-go/common"
+	"github.com/onsi/gomega"
 	"github.com/osdi23p228/fabric/common/flogging"
 	"github.com/osdi23p228/fabric/orderer/common/cluster"
 	"github.com/osdi23p228/fabric/orderer/common/cluster/mocks"
 	"github.com/osdi23p228/fabric/protoutil"
-	"github.com/onsi/gomega"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"go.etcd.io/etcd/raft/raftpb"

@@ -7,10 +7,10 @@ SPDX-License-Identifier: Apache-2.0
 package etcdraft_test
 
 import (
-	"github.com/osdi23p228/fabric/common/metrics/metricsfakes"
-	"github.com/osdi23p228/fabric/orderer/consensus/etcdraft"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/osdi23p228/fabric/common/metrics/metricsfakes"
+	"github.com/osdi23p228/fabric/orderer/consensus/etcdraft"
 )
 
 var _ = Describe("Metrics", func() {

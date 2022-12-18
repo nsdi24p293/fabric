@@ -737,13 +737,15 @@ func serve(args []string) error {
 	channelFetcher := endorserChannelAdapter{
 		peer: peerInstance,
 	}
-	serverEndorser := &endorser.Endorser{
-		PrivateDataDistributor: gossipService,
-		ChannelFetcher:         channelFetcher,
-		LocalMSP:               localMSP,
-		Support:                endorserSupport,
-		Metrics:                endorser.NewMetrics(metricsProvider),
-	}
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	serverEndorser := endorser.NewEndorser(
+		gossipService,
+		channelFetcher,
+		localMSP,
+		endorserSupport,
+		endorser.NewMetrics(metricsProvider),
+	)
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 
 	// deploy system chaincodes
 	for _, cc := range []scc.SelfDescribingSysCC{lsccInst, csccInst, qsccInst, lifecycleSCC} {

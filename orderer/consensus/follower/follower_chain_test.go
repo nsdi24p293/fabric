@@ -7,8 +7,9 @@ SPDX-License-Identifier: Apache-2.0
 package follower_test
 
 import (
-	"github.com/osdi23p228/fabric/orderer/common/types"
 	"testing"
+
+	"github.com/osdi23p228/fabric/orderer/common/types"
 
 	"github.com/osdi23p228/fabric/orderer/consensus/follower"
 	"github.com/pkg/errors"

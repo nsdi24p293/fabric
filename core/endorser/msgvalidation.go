@@ -154,10 +154,9 @@ func (up *UnpackedProposal) Validate(idDeserializer msp.IdentityDeserializer) er
 		return errors.New("creator is empty")
 	}
 
-	expectedTxID := protoutil.ComputeTxID(up.SignatureHeader.Nonce, up.SignatureHeader.Creator)
-	if up.TxID() != expectedTxID {
-		return errors.Errorf("incorrectly computed txid '%s' -- expected '%s'", up.TxID(), expectedTxID)
-	}
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	// DO NOT use the default transaction IDs
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 
 	if up.SignedProposal.ProposalBytes == nil {
 		return errors.Errorf("empty proposal bytes")

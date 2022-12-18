@@ -26,12 +26,12 @@ import (
 	"time"
 
 	docker "github.com/fsouza/go-dockerclient"
-	"github.com/osdi23p228/fabric/integration/nwo"
-	"github.com/osdi23p228/fabric/integration/nwo/commands"
-	fabricmsp "github.com/osdi23p228/fabric/msp"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
+	"github.com/osdi23p228/fabric/integration/nwo"
+	"github.com/osdi23p228/fabric/integration/nwo/commands"
+	fabricmsp "github.com/osdi23p228/fabric/msp"
 	"github.com/tedsuo/ifrit"
 	"gopkg.in/yaml.v2"
 )

@@ -10,11 +10,11 @@ import (
 	"encoding/json"
 	"testing"
 
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/osdi23p228/fabric/common/flogging"
 	"github.com/osdi23p228/fabric/integration"
 	"github.com/osdi23p228/fabric/integration/nwo"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 )
 
 func TestRaft(t *testing.T) {

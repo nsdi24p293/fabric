@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/osdi23p228/fabric/core/config/configtest"
 	"github.com/mitchellh/mapstructure"
+	"github.com/osdi23p228/fabric/core/config/configtest"
 	"github.com/stretchr/testify/assert"
 )
 

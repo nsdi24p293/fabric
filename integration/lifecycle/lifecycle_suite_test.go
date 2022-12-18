@@ -19,6 +19,10 @@ import (
 
 	pcommon "github.com/hyperledger/fabric-protos-go/common"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega/gbytes"
+	"github.com/onsi/gomega/gexec"
 	"github.com/osdi23p228/fabric/bccsp/sw"
 	"github.com/osdi23p228/fabric/common/flogging"
 	"github.com/osdi23p228/fabric/integration"
@@ -29,10 +33,6 @@ import (
 	"github.com/osdi23p228/fabric/internal/pkg/comm"
 	"github.com/osdi23p228/fabric/msp"
 	"github.com/osdi23p228/fabric/protoutil"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/gbytes"
-	"github.com/onsi/gomega/gexec"
 	"github.com/pkg/errors"
 	"github.com/tedsuo/ifrit"
 )

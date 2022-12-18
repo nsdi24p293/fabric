@@ -9,10 +9,10 @@ package raft
 import (
 	"github.com/hyperledger/fabric-protos-go/common"
 	"github.com/hyperledger/fabric-protos-go/orderer"
+	. "github.com/onsi/gomega"
 	"github.com/osdi23p228/fabric/cmd/common/signer"
 	"github.com/osdi23p228/fabric/integration/nwo"
 	"github.com/osdi23p228/fabric/protoutil"
-	. "github.com/onsi/gomega"
 )
 
 func FetchBlock(n *nwo.Network, o *nwo.Orderer, seq uint64, channel string) *common.Block {

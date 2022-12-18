@@ -11,8 +11,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/osdi23p228/fabric/integration/runner"
 	. "github.com/onsi/gomega"
+	"github.com/osdi23p228/fabric/integration/runner"
 )
 
 type Components struct {

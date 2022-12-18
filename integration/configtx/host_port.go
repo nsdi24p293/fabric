@@ -10,8 +10,8 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/osdi23p228/fabric/integration/nwo"
 	. "github.com/onsi/gomega"
+	"github.com/osdi23p228/fabric/integration/nwo"
 )
 
 // PeerHostPort returns the host name and port number for the specified peer.

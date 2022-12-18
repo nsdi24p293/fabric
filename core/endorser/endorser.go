@@ -100,7 +100,46 @@ type Endorser struct {
 	Support                Support
 	PvtRWSetAssembler      PvtRWSetAssembler
 	Metrics                *Metrics
+
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	ProposalOrderer *ProposalOrderer
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 }
+
+func NewEndorser(
+	gossipService PrivateDataDistributor,
+	channelFetcher ChannelFetcher,
+	localMSP msp.IdentityDeserializer,
+	endorserSupport Support,
+	metrics *Metrics,
+) *Endorser {
+	endorser := &Endorser{
+		PrivateDataDistributor: gossipService,
+		ChannelFetcher:         channelFetcher,
+		LocalMSP:               localMSP,
+		Support:                endorserSupport,
+		Metrics:                metrics,
+
+		// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+		ProposalOrderer: NewProposalOrderer(),
+	}
+
+	go endorser.processProposals()
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
+
+	return endorser
+}
+
+// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+func (e *Endorser) processProposals() {
+	for {
+		upw := e.ProposalOrderer.Pop()
+		upw.ProposalResponse, upw.Err = e.ProcessProposalSuccessfullyOrError(upw.UnpackedProposal)
+		upw.Done()
+	}
+}
+
+// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 
 // call specified chaincode (system or user)
 func (e *Endorser) callChaincode(txParams *ccprovider.TransactionParams, input *pb.ChaincodeInput, chaincodeName string) (*pb.Response, *pb.ChaincodeEvent, error) {
@@ -337,7 +376,14 @@ func (e *Endorser) ProcessProposal(ctx context.Context, signedProp *pb.SignedPro
 		e.Metrics.ProposalDuration.With(meterLabels...).Observe(time.Since(startTime).Seconds())
 	}()
 
-	pResp, err := e.ProcessProposalSuccessfullyOrError(up)
+	// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+	var pResp *pb.ProposalResponse
+	if util.IsCustomTXID(up.ChannelHeader.TxId) {
+		pResp, err = e.ProcessProposalInOrder(up)
+	} else {
+		pResp, err = e.ProcessProposalDirectly(up)
+	}
+	// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 	if err != nil {
 		return &pb.ProposalResponse{Response: &pb.Response{Status: 500, Message: err.Error()}}, nil
 	}
@@ -353,6 +399,21 @@ func (e *Endorser) ProcessProposal(ctx context.Context, signedProp *pb.SignedPro
 	}
 	return pResp, nil
 }
+
+// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+
+func (e *Endorser) ProcessProposalInOrder(up *UnpackedProposal) (*pb.ProposalResponse, error) {
+	upw := NewUnpackedProposalWrapper(up)
+	e.ProposalOrderer.Push(upw)
+	upw.Wait()
+	return upw.ProposalResponse, upw.Err
+}
+
+func (e *Endorser) ProcessProposalDirectly(up *UnpackedProposal) (*pb.ProposalResponse, error) {
+	return e.ProcessProposalSuccessfullyOrError(up)
+}
+
+// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 
 func (e *Endorser) ProcessProposalSuccessfullyOrError(up *UnpackedProposal) (*pb.ProposalResponse, error) {
 	txParams := &ccprovider.TransactionParams{

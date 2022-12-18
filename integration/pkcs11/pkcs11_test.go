@@ -24,12 +24,12 @@ import (
 	"syscall"
 	"time"
 
-	bpkcs11 "github.com/osdi23p228/fabric/bccsp/pkcs11"
-	"github.com/osdi23p228/fabric/integration/nwo"
-	"github.com/osdi23p228/fabric/integration/nwo/fabricconfig"
 	"github.com/miekg/pkcs11"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	bpkcs11 "github.com/osdi23p228/fabric/bccsp/pkcs11"
+	"github.com/osdi23p228/fabric/integration/nwo"
+	"github.com/osdi23p228/fabric/integration/nwo/fabricconfig"
 	"github.com/tedsuo/ifrit"
 )
 

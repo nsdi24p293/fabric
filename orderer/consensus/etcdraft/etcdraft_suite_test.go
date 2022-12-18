@@ -8,10 +8,10 @@ package etcdraft_test
 import (
 	"testing"
 
-	"github.com/osdi23p228/fabric/common/channelconfig"
-	"github.com/osdi23p228/fabric/msp"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/osdi23p228/fabric/common/channelconfig"
+	"github.com/osdi23p228/fabric/msp"
 )
 
 var testingInstance *testing.T

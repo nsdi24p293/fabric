@@ -363,17 +363,26 @@ func ComputeTxID(nonce, creator []byte) string {
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
+// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+
 // CheckTxID checks that txid is equal to the Hash computed
 // over the concatenation of nonce and creator.
+// func CheckTxID(txid string, nonce, creator []byte) error {
+// 	computedTxID := ComputeTxID(nonce, creator)
+
+// 	if txid != computedTxID {
+// 		return errors.Errorf("invalid txid. got [%s], expected [%s]", txid, computedTxID)
+// 	}
+
+// 	return nil
+// }
+
+// Always disable transaction id checking
 func CheckTxID(txid string, nonce, creator []byte) error {
-	computedTxID := ComputeTxID(nonce, creator)
-
-	if txid != computedTxID {
-		return errors.Errorf("invalid txid. got [%s], expected [%s]", txid, computedTxID)
-	}
-
 	return nil
 }
+
+// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 
 // InvokedChaincodeName takes the proposal bytes of a SignedProposal, and unpacks it all the way down,
 // until either an error is encountered, or the chaincode name is found. This is useful primarily

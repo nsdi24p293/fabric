@@ -35,6 +35,8 @@ import (
 	mspp "github.com/hyperledger/fabric-protos-go/msp"
 	ab "github.com/hyperledger/fabric-protos-go/orderer"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
+	"github.com/onsi/gomega/gbytes"
+	"github.com/onsi/gomega/gexec"
 	"github.com/osdi23p228/fabric/bccsp/sw"
 	"github.com/osdi23p228/fabric/common/crypto"
 	"github.com/osdi23p228/fabric/core/ledger/util"
@@ -43,8 +45,6 @@ import (
 	"github.com/osdi23p228/fabric/internal/pkg/comm"
 	"github.com/osdi23p228/fabric/msp"
 	"github.com/osdi23p228/fabric/protoutil"
-	"github.com/onsi/gomega/gbytes"
-	"github.com/onsi/gomega/gexec"
 	"github.com/tedsuo/ifrit"
 	"github.com/tedsuo/ifrit/grouper"
 )

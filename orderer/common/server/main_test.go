@@ -18,6 +18,8 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric-protos-go/common"
+	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega/gexec"
 	"github.com/osdi23p228/fabric/bccsp/factory"
 	"github.com/osdi23p228/fabric/bccsp/sw"
 	"github.com/osdi23p228/fabric/common/channelconfig"
@@ -41,8 +43,6 @@ import (
 	server_mocks "github.com/osdi23p228/fabric/orderer/common/server/mocks"
 	"github.com/osdi23p228/fabric/orderer/consensus"
 	"github.com/osdi23p228/fabric/protoutil"
-	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/gexec"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

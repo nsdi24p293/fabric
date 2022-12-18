@@ -19,6 +19,7 @@ import (
 	"github.com/hyperledger/fabric-protos-go/common"
 	"github.com/hyperledger/fabric-protos-go/discovery"
 	"github.com/hyperledger/fabric-protos-go/msp"
+	"github.com/onsi/gomega/gexec"
 	"github.com/osdi23p228/fabric/common/channelconfig"
 	"github.com/osdi23p228/fabric/common/configtx"
 	"github.com/osdi23p228/fabric/common/configtx/test"
@@ -27,7 +28,6 @@ import (
 	"github.com/osdi23p228/fabric/internal/configtxgen/encoder"
 	"github.com/osdi23p228/fabric/internal/configtxgen/genesisconfig"
 	"github.com/osdi23p228/fabric/protoutil"
-	"github.com/onsi/gomega/gexec"
 	"github.com/stretchr/testify/assert"
 )
 

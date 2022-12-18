@@ -13,12 +13,12 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/osdi23p228/fabric/integration/nwo"
-	"github.com/osdi23p228/fabric/integration/nwo/commands"
-	"github.com/osdi23p228/fabric/integration/runner"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
+	"github.com/osdi23p228/fabric/integration/nwo"
+	"github.com/osdi23p228/fabric/integration/nwo/commands"
+	"github.com/osdi23p228/fabric/integration/runner"
 	"github.com/tedsuo/ifrit"
 )
 

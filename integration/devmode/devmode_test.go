@@ -16,12 +16,12 @@ import (
 	"time"
 
 	docker "github.com/fsouza/go-dockerclient"
-	"github.com/osdi23p228/fabric/integration/nwo"
-	"github.com/osdi23p228/fabric/integration/nwo/commands"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
+	"github.com/osdi23p228/fabric/integration/nwo"
+	"github.com/osdi23p228/fabric/integration/nwo/commands"
 	"github.com/tedsuo/ifrit"
 	"github.com/tedsuo/ifrit/ginkgomon"
 )

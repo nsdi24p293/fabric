@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package chaincode
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"strconv"
@@ -19,6 +20,7 @@ import (
 	"github.com/osdi23p228/fabric/common/channelconfig"
 	"github.com/osdi23p228/fabric/common/flogging"
 	commonledger "github.com/osdi23p228/fabric/common/ledger"
+	"github.com/osdi23p228/fabric/common/util"
 	"github.com/osdi23p228/fabric/core/aclmgmt/resources"
 	"github.com/osdi23p228/fabric/core/common/ccprovider"
 	"github.com/osdi23p228/fabric/core/common/privdata"
@@ -598,7 +600,8 @@ func (h *Handler) HandleGetState(msg *pb.ChaincodeMessage, txContext *Transactio
 		return nil, errors.Wrap(err, "unmarshal failed")
 	}
 
-	var res []byte
+	var payload []byte
+	var bcValue ledger.VersionedValue
 	namespaceID := txContext.NamespaceID
 	collection := getState.Collection
 	chaincodeLogger.Debugf("[%s] getting state for chaincode %s, key %s, channel %s", shorttxid(msg.Txid), namespaceID, getState.Key, txContext.ChannelID)
@@ -610,19 +613,40 @@ func (h *Handler) HandleGetState(msg *pb.ChaincodeMessage, txContext *Transactio
 		if err := errorIfCreatorHasNoReadPermission(namespaceID, collection, txContext); err != nil {
 			return nil, err
 		}
-		res, err = txContext.TXSimulator.GetPrivateData(namespaceID, collection, getState.Key)
+		payload, err = txContext.TXSimulator.GetPrivateData(namespaceID, collection, getState.Key)
 	} else {
-		res, err = txContext.TXSimulator.GetState(namespaceID, getState.Key)
+		// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+		if util.IsCustomTXID(msg.Txid) {
+			_, session := util.ParseCustomTXID(msg.Txid)
+			dbValue := txContext.TXSimulator.GetDBState(getState.Key, session)
+			if dbValue == nil {
+				res, err := txContext.TXSimulator.GetState(namespaceID, getState.Key)
+				if res != nil {
+					err = json.Unmarshal(res, &bcValue)
+					if err != nil {
+						chaincodeLogger.Fatalf("Fail to unmarshal blockchain value: %v", err)
+					}
+					payload = bcValue.Value
+					txContext.TXSimulator.SetDBState(getState.Key, &bcValue, session)
+				}
+			} else {
+				payload = dbValue.Value
+			}
+		} else {
+			payload, err = txContext.TXSimulator.GetState(namespaceID, getState.Key)
+		}
+
+		// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
 	}
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
-	if res == nil {
+	if payload == nil {
 		chaincodeLogger.Debugf("[%s] No state associated with key: %s. Sending %s with an empty payload", shorttxid(msg.Txid), getState.Key, pb.ChaincodeMessage_RESPONSE)
 	}
 
 	// Send response msg back to chaincode. GetState will not trigger event
-	return &pb.ChaincodeMessage{Type: pb.ChaincodeMessage_RESPONSE, Payload: res, Txid: msg.Txid, ChannelId: msg.ChannelId}, nil
+	return &pb.ChaincodeMessage{Type: pb.ChaincodeMessage_RESPONSE, Payload: payload, Txid: msg.Txid, ChannelId: msg.ChannelId}, nil
 }
 
 func (h *Handler) HandleGetPrivateDataHash(msg *pb.ChaincodeMessage, txContext *TransactionContext) (*pb.ChaincodeMessage, error) {
@@ -998,6 +1022,14 @@ func (h *Handler) HandlePutState(msg *pb.ChaincodeMessage, txContext *Transactio
 		}
 		err = txContext.TXSimulator.SetPrivateData(namespaceID, collection, putState.Key, putState.Value)
 	} else {
+		if util.IsCustomTXID(msg.Txid) {
+			_, session := util.ParseCustomTXID(msg.Txid)
+			vv := ledger.VersionedValue{
+				TXID:  msg.Txid,
+				Value: putState.Value,
+			}
+			txContext.TXSimulator.SetDBState(putState.Key, &vv, session)
+		}
 		err = txContext.TXSimulator.SetState(namespaceID, putState.Key, putState.Value)
 	}
 	if err != nil {

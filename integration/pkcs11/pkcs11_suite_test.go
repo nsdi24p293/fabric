@@ -10,14 +10,14 @@ import (
 	"encoding/json"
 	"testing"
 
-	bpkcs11 "github.com/osdi23p228/fabric/bccsp/pkcs11"
-	"github.com/osdi23p228/fabric/integration"
-	"github.com/osdi23p228/fabric/integration/nwo"
-	"github.com/osdi23p228/fabric/integration/nwo/commands"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
+	bpkcs11 "github.com/osdi23p228/fabric/bccsp/pkcs11"
+	"github.com/osdi23p228/fabric/integration"
+	"github.com/osdi23p228/fabric/integration/nwo"
+	"github.com/osdi23p228/fabric/integration/nwo/commands"
 )
 
 func TestPKCS11(t *testing.T) {

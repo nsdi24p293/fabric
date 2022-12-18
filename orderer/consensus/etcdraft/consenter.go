@@ -16,6 +16,7 @@ import (
 	"github.com/hyperledger/fabric-protos-go/common"
 	"github.com/hyperledger/fabric-protos-go/orderer"
 	"github.com/hyperledger/fabric-protos-go/orderer/etcdraft"
+	"github.com/mitchellh/mapstructure"
 	"github.com/osdi23p228/fabric/bccsp"
 	"github.com/osdi23p228/fabric/common/crypto"
 	"github.com/osdi23p228/fabric/common/flogging"
@@ -27,7 +28,6 @@ import (
 	"github.com/osdi23p228/fabric/orderer/consensus"
 	"github.com/osdi23p228/fabric/orderer/consensus/follower"
 	"github.com/osdi23p228/fabric/orderer/consensus/inactive"
-	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
 	"go.etcd.io/etcd/raft"
 )

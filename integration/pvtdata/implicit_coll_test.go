@@ -13,11 +13,11 @@ import (
 	"path/filepath"
 	"time"
 
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/osdi23p228/fabric/integration/chaincode/kvexecutor"
 	"github.com/osdi23p228/fabric/integration/nwo"
 	"github.com/osdi23p228/fabric/integration/nwo/commands"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 
 	"github.com/tedsuo/ifrit"
 )

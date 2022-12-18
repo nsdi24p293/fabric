@@ -10,11 +10,15 @@ import (
 	"crypto/rand"
 	"fmt"
 	"io"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/golang/protobuf/ptypes/timestamp"
+	cb "github.com/hyperledger/fabric-protos-go/common"
 	"github.com/osdi23p228/fabric/bccsp"
 	"github.com/osdi23p228/fabric/bccsp/factory"
+	utils "github.com/osdi23p228/fabric/protoutil"
 )
 
 // ComputeSHA256 returns SHA2-256 on data
@@ -96,3 +100,41 @@ func ConcatenateBytes(data ...[]byte) []byte {
 	}
 	return result
 }
+
+// strawman codes vvvvvvvvvvvvvvvvvvvvvvv
+func IsCustomTXID(txID string) bool {
+	components := strings.Split(txID, "_+=+_")
+	return len(components) == 3
+}
+
+func ParseCustomTXID(txID string) (int, string) {
+	components := strings.Split(txID, "_+=+_")
+	if len(components) != 3 {
+		panic(fmt.Sprintf("Illegal transaction id '%s'", txID))
+	}
+
+	sequence, err := strconv.Atoi(components[0])
+	if err != nil {
+		panic(fmt.Sprintf("Invalid sequence number in transaction id '%s'", txID))
+	}
+
+	session := components[1]
+
+	return sequence, session
+}
+
+func GetTXIDFromEnvelope(msg *cb.Envelope) string {
+	payload, err := utils.UnmarshalPayload(msg.GetPayload())
+	if err != nil {
+		panic("Can not get payload from the txn envelop: ")
+	}
+	chdr, err := utils.UnmarshalChannelHeader(payload.Header.ChannelHeader)
+	if err != nil {
+		panic("Can not mershal channel header from the txn payload")
+	}
+
+	return chdr.TxId
+
+}
+
+// strawman codes ^^^^^^^^^^^^^^^^^^^^^^^
